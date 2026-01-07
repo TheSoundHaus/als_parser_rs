@@ -1,8 +1,0 @@
-[package]
-name = "als_parser_rs"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-phf = { version = "0.13.1", features = ["macros"] }
-quick-xml = "0.38.4"
