@@ -1,235 +1,164 @@
 {
-      "MidiTrack" : {
-          "EffectiveName": "1-Trancil Exit Kit",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
-                "UserName": "Trancil Exit Kit",
-                "Branches" : {                  "DrumBranch" : {
-                      "EffectiveName": "Kick Trancil Exit",
-                      "UserName": "",
-                            "UserName": "Kick Trancil Exit",
-                            "Branches" : {
-                                  "EffectiveName": "Kick Skin Step",
-                                  "UserName": "",
-                                        "UserName": "",
-                                  "UserName": "",
-                                  "EffectiveName": "Kick Synth Tonal Mkit",
-                                  "UserName": "",
-                                        "UserName": "",
-                                  "UserName": "",
-                            },
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "E-Perc Weighty Knock",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Snare Mkit Sample 9",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Snare Leaner",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Snare Jungle Skitter",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Tom 707 Low",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Hihat Closed ER Fenk 1",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Tom 707 Hi",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Shaker Acoustic Step 3",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Synth Note Wide Phatty F",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Hihat Closed ER Fenk 5",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "FX Vocoder Chord Pluck C",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Synth Chord Pad Morph G#min",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Synth Chord Pad Morph G#min",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Synth Chord Dmin",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                  "DrumBranch" : {
-                      "EffectiveName": "Synth Note Pulsating Reese F",
-                      "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                  },
-                },
-                      "EffectiveName": "a London Reverb 2.0",
-                      "UserName": "",
-                            "UserName": "London Reverb 2.0",
-                      "UserName": "",
-                      "EffectiveName": "b Send Reverb Thru Drum Master | London Kit Audio Effect ",
-                      "UserName": "",
-                            "UserName": "Send Reverb Thru Drum Master",
-                            "Branches" : {
-                                  "EffectiveName": "Gate",
-                                  "UserName": "",
-                                        "UserName": "",
-                                  "UserName": "",
-                                  "EffectiveName": "Chain",
-                                  "UserName": "",
-                                  "UserName": "",
-                            },
-                            "UserName": "London Kit Audio Effect ",
-                            "Branches" : {
-                                  "EffectiveName": "Beat Repeat | Auto Filter Legacy | Vinyl Distortion | Echo | EQ Eight | Drum Buss | Squash | Limiter",
-                                  "UserName": "",
-                                        "UserName": "",
-                                        "UserName": "",
-                                        "UserName": "",
-                                        "UserName": "",
-                                        "UserName": "",
-                                          "UserName": "",
-                                        "UserName": "",
-                                        "UserName": "Squash",
-                                        "UserName": "",
-                                  "UserName": "",
-                            },
-                      "UserName": "",
+  "Tracks": [
+    {
+    "type": "MidiTrack", 
+    "EffectiveName": "1-Trancil Exit Kit", 
+    "UserName": "Trancil Exit Kit",
+    "Branches": [
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Kick Trancil Exit", 
+      "UserName": "Kick Trancil Exit",
+      "Branches": [
+        {
+        "type": "InstrumentBranch", 
+        "EffectiveName": "Kick Skin Step"
+        },
+        {
+        "type": "InstrumentBranch", 
+        "EffectiveName": "Kick Synth Tonal Mkit"
+        }
+      ]
       },
-      "AudioTrack" : {
-          "EffectiveName": "2-Kick Creh",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "E-Perc Weighty Knock"
       },
-      "AudioTrack" : {
-          "EffectiveName": "3-Group (Bounce)",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Snare Mkit Sample 9"
       },
-      "AudioTrack" : {
-          "EffectiveName": "4-Hihat Closed 2B",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
-                "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Snare Leaner"
       },
-      "AudioTrack" : {
-          "EffectiveName": "5-Group (Bounce)",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Snare Jungle Skitter"
       },
-      "MidiTrack" : {
-          "EffectiveName": "6-Marimba Concert",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
-                "UserName": "Marimba Concert",
-                "Branches" : {
-                      "EffectiveName": "Marimba",
-                      "UserName": "",
-                            "UserName": "Marimba",
-                            "UserName": "",
-                            "UserName": "",
-                      "UserName": "",
-                },
-                "UserName": "Power Chord Nation",
-                "Branches" : {
-                      "EffectiveName": "Rhythm Sustain | Drum Buss | EQ Three | Rhythm Chunks | Limiter",
-                      "UserName": "",
-                            "UserName": "Rhythm Sustain",
-                            "UserName": "",
-                            "UserName": "",
-                            "UserName": "Rhythm Chunks",
-                            "UserName": "",
-                      "UserName": "",
-                },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Tom 707 Low"
       },
-      "AudioTrack" : {
-          "EffectiveName": "7-JakeIsDying",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Hihat Closed ER Fenk 1"
       },
-      "AudioTrack" : {
-          "EffectiveName": "8-JaredFnaF",
-          "UserName": "",
-            "UserName": "",
-            "UserName": "",
-            "UserName": "",
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Tom 707 Hi"
       },
-          "EffectiveName": "A-Reverb",
-          "UserName": "",
-            "UserName": "",
-                "UserName": "",
-            "UserName": "",
-          "EffectiveName": "B-Delay",
-          "UserName": "",
-            "UserName": "",
-                "UserName": "Delay",
-            "UserName": "",
-        "EffectiveName": "Main",
-        "UserName": "",
-          "UserName": "",
-            "UserName": "",
-        "EffectiveName": "0-Main",
-        "UserName": "",
-          "UserName": ""}
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Shaker Acoustic Step 3"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Synth Note Wide Phatty F"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Hihat Closed ER Fenk 5"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "FX Vocoder Chord Pluck C"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Synth Chord Pad Morph G#min"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Synth Chord Pad Morph G#min"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Synth Chord Dmin"
+      },
+      {
+      "type": "DrumBranch", 
+      "EffectiveName": "Synth Note Pulsating Reese F"
+      }
+    ], 
+    "EffectiveName": "a London Reverb 2.0", 
+    "UserName": "London Reverb 2.0", 
+    "EffectiveName": "b Send Reverb Thru Drum Master | London Kit Audio Effect ", 
+    "UserName": "Send Reverb Thru Drum Master",
+    "Branches": [
+      {
+      "type": "AudioEffectBranch", 
+      "EffectiveName": "Gate"
+      },
+      {
+      "type": "AudioEffectBranch", 
+      "EffectiveName": "Chain"
+      }
+    ], 
+    "UserName": "London Kit Audio Effect ",
+    "Branches": [
+      {
+      "type": "AudioEffectBranch", 
+      "EffectiveName": "Beat Repeat | Auto Filter Legacy | Vinyl Distortion | Echo | EQ Eight | Drum Buss | Squash | Limiter", 
+      "UserName": "Squash"
+      }
+    ]
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "2-Kick Creh"
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "3-Group (Bounce)"
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "4-Hihat Closed 2B"
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "5-Group (Bounce)"
+    },
+    {
+    "type": "MidiTrack", 
+    "EffectiveName": "6-Marimba Concert", 
+    "UserName": "Marimba Concert",
+    "Branches": [
+      {
+      "type": "InstrumentBranch", 
+      "EffectiveName": "Marimba", 
+      "UserName": "Marimba"
+      }
+    ], 
+    "UserName": "Power Chord Nation",
+    "Branches": [
+      {
+      "type": "AudioEffectBranch", 
+      "EffectiveName": "Rhythm Sustain | Drum Buss | EQ Three | Rhythm Chunks | Limiter", 
+      "UserName": "Rhythm Sustain", 
+      "UserName": "Rhythm Chunks"
+      }
+    ]
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "7-JakeIsDying"
+    },
+    {
+    "type": "AudioTrack", 
+    "EffectiveName": "8-JaredFnaF"
+    },
+    {
+    "type": "ReturnTrack", 
+    "EffectiveName": "A-Reverb"
+    },
+    {
+    "type": "ReturnTrack", 
+    "EffectiveName": "B-Delay", 
+    "UserName": "Delay"
+    }
+  ], 
+  "EffectiveName": "Main", 
+  "EffectiveName": "0-Main"
+}
