@@ -23,7 +23,7 @@ macro_rules! indent {
 // Only appear once per xml file
 static KEY_TAGS: phf::Set<&'static [u8]> = phf_set! {
     b"Tracks",
-    b"Branches"
+    b"Branches",
 };
 
 // Appear repeatedly as members of the KEY_TAGS
@@ -53,7 +53,7 @@ fn main() -> std::io::Result<()> {
     let mut depth = 0;
     let mut is_first_bitmask: u64 = !0;
 
-    writer.write_all(b"{\n")?;
+    writer.write_all(b"{")?;
     is_first_bitmask &= !1;
     depth += 1;
     loop {
@@ -66,6 +66,7 @@ fn main() -> std::io::Result<()> {
                     let is_first = (is_first_bitmask >> depth) & 1;
                     if is_first == 0 {
                         writer.write_all(b",")?;
+                    } else {
                         is_first_bitmask &= !(1 << depth);
                     }
                     writer.write_all(b"\n")?;
@@ -75,17 +76,17 @@ fn main() -> std::io::Result<()> {
                         writer.write_all(b"\"")?;
                         writer.write_all(name.as_ref())?;
                         writer.write_all(b"\": [")?;    
+                        depth += 1;
                     }
                     else if MEMBER_TAGS.contains(name.as_ref()) {
                         // Write tag found
                         indent!(writer, depth);
                         writer.write_all(b"{\n")?;
                         indent!(writer, depth);
-                        writer.write_all(b"\"placeholder\": \"")?;
+                        writer.write_all(b"\"type\": \"")?;
                         writer.write_all(name.as_ref())?;
                         writer.write_all(b"\"")?;
                     }
-                    depth += 1;
                 }
             }
 
@@ -98,12 +99,14 @@ fn main() -> std::io::Result<()> {
                         // Skip empty tags
                         if attr.value.is_empty() { continue; } 
                         
-                        let is_first = (1 << (depth)) & is_first_bitmask;
-                        if is_first == 0 { writer.write_all(b",\n")?; }
-                        else { 
-                            writer.write_all(b"\n")?;
-                            is_first_bitmask &= 0 << (depth);
+                        let is_first = (is_first_bitmask >> depth) & 1;
+                        if is_first == 0 {
+                            writer.write_all(b",")?; 
                         }
+                        else { 
+                            is_first_bitmask &= !(1 << depth);
+                        }
+                        writer.write_all(b"\n")?;
                         indent!(writer, depth);
                         writer.write_all(b"\"")?;
                         writer.write_all(name.as_ref())?;
@@ -118,13 +121,12 @@ fn main() -> std::io::Result<()> {
             Ok(Event::End(e)) => {
                 let name = e.name();
                 if KEY_TAGS.contains(name.as_ref()) {
-                    depth -= 1;
                     writer.write_all(b"\n")?; 
+                    depth -= 1;
                     indent!(writer, depth);
                     writer.write_all(b"]")?;
                 }
                 else if MEMBER_TAGS.contains(name.as_ref()) {
-                    depth -= 1;
                     writer.write_all(b"\n")?;
                     indent!(writer, depth);
                     writer.write_all(b"}")?;
