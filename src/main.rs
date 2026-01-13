@@ -24,6 +24,8 @@ macro_rules! indent {
 static KEY_TAGS: phf::Set<&'static [u8]> = phf_set! {
     b"Tracks",
     b"Branches",
+    // b"MainTrack",
+    // b"PreHearTrack", // PreHear Track is Master Track
 };
 
 // Appear repeatedly as members of the KEY_TAGS
@@ -32,9 +34,9 @@ static MEMBER_TAGS: phf::Set<&'static [u8]> = phf_set! {
     b"AudioTrack",
     b"MidiTrack",
     b"ReturnTrack",
-    b"MainTrack",
-    b"PreHearTrack", // PreHear Track is Master Track
     b"DrumBranch",
+    b"InstrumentBranch",
+    b"AudioEffectBranch",
     
     // Self closing tags <tag />
     b"EffectiveName",
@@ -42,7 +44,7 @@ static MEMBER_TAGS: phf::Set<&'static [u8]> = phf_set! {
 };
 
 fn main() -> std::io::Result<()> {
-    let fin = File::open("GoodMusic")?;
+    let fin = File::open("Dying")?;
     let mut reader = Reader::from_reader(BufReader::new(fin));
 
     let fout = File::create("output.json")?;
@@ -122,6 +124,7 @@ fn main() -> std::io::Result<()> {
                 let name = e.name();
                 if KEY_TAGS.contains(name.as_ref()) {
                     writer.write_all(b"\n")?; 
+                    is_first_bitmask |= 1 << depth;
                     depth -= 1;
                     indent!(writer, depth);
                     writer.write_all(b"]")?;
