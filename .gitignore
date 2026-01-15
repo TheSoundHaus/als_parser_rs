@@ -1,5 +1,7 @@
-/target
+target/
 Dying
 Tutorial
 GoodMusic
 output.json
+node_modules/
+*.node
