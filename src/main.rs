@@ -1,4 +1,5 @@
 use std::{fs::File, io::BufReader, io::BufWriter, io::Write as IoWrite};
+use flate2::bufread::GzDecoder;
 use quick_xml::reader::Reader;
 use quick_xml::events::Event;
 use phf::phf_set;
@@ -44,8 +45,15 @@ static MEMBER_TAGS: phf::Set<&'static [u8]> = phf_set! {
 };
 
 fn main() -> std::io::Result<()> {
-    let fin = File::open("Dying")?;
-    let mut reader = Reader::from_reader(BufReader::new(fin));
+    // Input file
+    let fin = File::open("GoodMusic.als").unwrap();
+    
+    // Decompression / Parsing pipeline 
+    // 2 buffers used here to minimize syscalls 
+    let compressed_buffer = BufReader::new(fin);
+    let decompressor = GzDecoder::new(compressed_buffer);
+    let buffered_reader = BufReader::new(decompressor);
+    let mut xml_reader = Reader::from_reader(buffered_reader);
 
     let fout = File::create("output.json")?;
     let mut writer = BufWriter::new(fout); 
@@ -59,7 +67,7 @@ fn main() -> std::io::Result<()> {
     is_first_bitmask &= !1;
     depth += 1;
     loop {
-        match reader.read_event_into(&mut buf) {
+        match xml_reader.read_event_into(&mut buf) {
             // Start tag: Parse and increment level by one
             Ok(Event::Start(e) ) => {
                 let name = e.name();
@@ -136,7 +144,7 @@ fn main() -> std::io::Result<()> {
                 }
             }
             Ok(Event::Eof) => break,
-            Err(e) => panic!("Error at position {}: {:?}", reader.buffer_position(), e),
+            Err(e) => panic!("Error at position {}: {:?}", xml_reader.buffer_position(), e),
             _ => (),
         }
         buf.clear();
