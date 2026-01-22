@@ -5,5 +5,6 @@ edition = "2024"
 
 [dependencies]
 flate2 = "1.1.8"
-phf = { version = "0.13.1", features = ["macros"] }
 quick-xml = "0.38.4"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
