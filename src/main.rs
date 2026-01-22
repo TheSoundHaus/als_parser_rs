@@ -18,7 +18,7 @@ struct Track {
     #[serde(rename = "EffectiveName")]
     effective_name: String,
 
-    #[serde(rename = "UserName")]
+    #[serde(rename = "UserName", skip_serializing_if = "Option::is_none")]
     user_name: Option<String>,
 
     #[serde(rename = "Branches", skip_serializing_if = "Option::is_none")]
@@ -52,7 +52,7 @@ struct Branch {
     #[serde(rename = "EffectiveName")] 
     effective_name: String,
 
-    #[serde(rename = "UserName")]
+    #[serde(rename = "UserName", skip_serializing_if = "Option::is_none")]
     user_name: Option<String>,
 
     #[serde(rename = "Branches", skip_serializing_if = "Option::is_none")]
@@ -99,6 +99,9 @@ fn get_project_from_als(path: &str) -> Project {
     let mut cur_track: Option<Track> = None; 
     let mut branch_stack: Vec<Vec<Branch>> = Vec::new();
 
+    // Used to avoid inheriting usernames if username is undefined
+    let mut in_name_block = false;
+
     let mut buf = Vec::new();
     loop {
         match xml_reader.read_event_into(&mut buf) {
@@ -126,6 +129,11 @@ fn get_project_from_als(path: &str) -> Project {
                         }
                     },
 
+                    // Entered name block (important for context locality)
+                    b"Name" => {
+                        in_name_block = true;
+                    },
+
                    _ => (),
                 }
             },
@@ -138,12 +146,12 @@ fn get_project_from_als(path: &str) -> Project {
                     b"EffectiveName" | b"UserName" => {
 
                         // Add attributes to to the latest branch/track if there is one
-                        if let Ok(Some(attr)) = e.try_get_attribute("Value") {
+                        // Avoid context breaking by ensuring we are inside a <Name></Name> block
+                        if let Ok(Some(attr)) = e.try_get_attribute("Value") && in_name_block {
                             if let Some(branch_bucket) = branch_stack.last_mut() {
                                 if let Some(branch) = branch_bucket.last_mut() {
                                     if name.as_ref() == b"EffectiveName" { branch.set_effective_name(attr.value.as_ref()); }
                                     else if !attr.value.is_empty() { branch.set_user_name(attr.value.as_ref()); }
-                                    else { branch.set_user_name(b"UserName_Undefined"); } 
                                 }
                             }
 
@@ -151,7 +159,6 @@ fn get_project_from_als(path: &str) -> Project {
                             else if let Some(ref mut track) = cur_track {
                                 if name.as_ref() == b"EffectiveName" { track.set_effective_name(attr.value.as_ref());} 
                                 else if !attr.value.is_empty() { track.set_user_name(attr.value.as_ref()); }
-                                else { track.set_user_name(b"UserName_Undefined"); } 
                             }            
                         } 
                     },
@@ -187,6 +194,10 @@ fn get_project_from_als(path: &str) -> Project {
                                 t.branches = Some(deepest_branch);
                             }
                         }
+                    },
+                    
+                    b"Name" => {
+                        in_name_block = false;
                     },
 
                    _ => (),
