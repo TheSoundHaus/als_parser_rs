@@ -1,22 +1,22 @@
-
 [package]
-authors = ["LongYinan <lynweklm@gmail.com>"]
-edition = "2021"
-name = "parser"
+name = "als-parser"
 version = "0.1.0"
+edition = "2021"
 
 [lib]
+# This is crucial: it tells Rust to build a dynamic library for Node.js
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = "3.0.0"
-napi-derive = "3.0.0"
-phf = { version = "0.13.1", features = ["macros"] }
-quick-xml = "0.38.4"
+# N-API dependencies
+napi = { version = "2.12.2", default-features = false, features = ["serde-json"] }
+napi-derive = "2.12.2"
+
+# Your logic dependencies
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+quick-xml = "0.31"
+flate2 = "1.0"
 
 [build-dependencies]
-napi-build = "2"
-
-[profile.release]
-lto = true
-strip = "symbols"
+napi-build = "2.0.1"
