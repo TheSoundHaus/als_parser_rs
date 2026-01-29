@@ -1,4 +1,4 @@
-use std::{fs::File, io::BufReader};
+use std::{collections, fs::File, io::BufReader};
 use flate2::bufread::GzDecoder;
 use quick_xml::reader::Reader;
 use quick_xml::events::Event;
@@ -10,10 +10,41 @@ struct Project {
     tracks: Vec<Track>,
 }
 
+impl Project {
+    fn diff(&self, old: &Project) -> Vec<String> {
+        let mut changes = Vec::new();
+
+        // hash both version by track
+        let old_map: std::collections::HashMap<_, _> = old.tracks.iter().map(|t| (&t.id, t)).collect();
+        let new_map: std::collections::HashMap<_, _> = self.tracks.iter().map(|t| (&t.id, t)).collect();
+
+        // check for delted tracks
+        for (id, track) in &old_map {
+            if !new_map.contains_key(id) {
+                changes.push(format!("Removed track: {}", track.effective_name));
+            }
+        }
+
+        for (id, track) in &new_map {
+            if let Some(old_track) = old_map.get(id) {
+                if track != old_track {
+                    track.diff_content(old_track, &mut changes);
+                } else {
+                    changes.push(format!("Added new track: {}", track.effective_name));
+                }
+            }
+        }
+
+        changes
+    }
+}
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 struct Track {
     #[serde(rename = "Type")]
     track_type: String,         // Midi, Audio, Return
+
+    #[serde(rename = "Id")]
+    id: String,
 
     #[serde(rename = "EffectiveName")]
     effective_name: String,
@@ -26,9 +57,10 @@ struct Track {
 }
 
 impl Track {
-    fn new(track_type: &[u8]) -> Self {
+    fn new(track_type: &[u8], id: &[u8]) -> Self {
         Self {
             track_type: String::from_utf8_lossy(track_type).into_owned(),
+            id: String::from_utf8_lossy(id).into_owned(), 
             effective_name: String::new(),
             user_name: None,
             branches: None, 
@@ -42,6 +74,28 @@ impl Track {
     fn set_user_name(&mut self, user_name: &[u8]) {
         self.user_name = Some(String::from_utf8_lossy(user_name).into_owned());
     }
+
+    fn diff_content(&self, old: &Track, changes: &mut Vec<String>) {
+
+        // Check for username updates
+        if self.user_name != old.user_name {
+            let old_un = old.user_name.as_deref().unwrap_or("None");
+            let new_un = self.user_name.as_deref().unwrap_or("None");
+            changes.push(format!("Track {}: User name changed from '{}' to '{}'", self.id, old_un, new_un));
+        } 
+
+        // If effective name changed, it's probably an instrument change
+        else if self.effective_name != old.effective_name {
+            changes.push(format!("Track {}: Changed instrument {} to {}", self.id, old.effective_name, self.effective_name));
+        }
+
+        // Diff branches
+        // diff_branches(old, changes);
+    }
+
+    // fn diff_branches(&self, old: &Track, changes: &mut Vec<String>) {
+        
+    // }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
@@ -76,6 +130,10 @@ impl Branch {
     fn set_user_name(&mut self, user_name: &[u8]) {
         self.user_name = Some(String::from_utf8_lossy(user_name).into_owned());
     }
+}
+
+struct DiffSummary {
+    changes: Vec<String>,
 }
 
 // Convert als project to project struct
@@ -113,7 +171,9 @@ fn get_project_from_als(path: &str) -> Project {
                 match name.as_ref() {
                     // Track found
                     b"AudioTrack" | b"MidiTrack" | b"ReturnTrack" => {
-                        cur_track = Some(Track::new(name.as_ref()));
+                        if let Ok(Some(attr)) = e.try_get_attribute("Id") {
+                            cur_track = Some(Track::new(name.as_ref(), attr.value.as_ref()));
+                        }
                     },
 
                     // Branches group found 
@@ -214,11 +274,29 @@ fn get_project_from_als(path: &str) -> Project {
     return project;
 }
 
-fn main() -> std::io::Result<()> {
-    let project = get_project_from_als("GoodMusic.als");
+// Generate human readable diff from 2 project structs
+fn diff_projects(project1: Project, project2: Project) -> Option<String> {
+    
+    let changes = project2.diff(&project1);
 
-    let json = serde_json::to_string_pretty(&project)?;
-    print!("{}", json);
+    for change in changes {
+        println!("{}", change);
+    }
+
+    //TODO: Remove this. Just so Rust doesn't yell at me
+    return Some(String::new());
+}
+
+fn main() -> std::io::Result<()> {
+    let project1 = get_project_from_als("DiffTestPre.als");
+    let project2 = get_project_from_als("DiffTestPost.als");
+
+    // println!("{}", serde_json::to_string_pretty(&project1).unwrap());
+    // println!("{}", serde_json::to_string_pretty(&project2).unwrap());
+    
+    if let Some(diff) = diff_projects(project1, project2) {
+        println!("Gonna Fix Later. Done for now tho {}", diff);
+    }
 
     Ok(())
 }
