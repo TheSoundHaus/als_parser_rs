@@ -31,7 +31,7 @@ impl Project {
         for (id, track) in &new_map {
             if let Some(old_track) = old_map.get(id) {
                 // If ID exists in both, check for deep inequality
-                if track != *old_track {
+                if *track != *old_track {
                     track.diff_content(old_track, &mut changes);
                 }
             } else {

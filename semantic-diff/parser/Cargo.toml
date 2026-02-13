@@ -9,8 +9,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 # N-API dependencies
-napi = { version = "2.12.2", default-features = false, features = ["serde-json"] }
-napi-derive = "2.12.2"
+napi = { version = "3.5.1", default-features = false, features = ["serde-json", "napi6"] }
+napi-derive = "3.5.1"
 
 # Your logic dependencies
 serde = { version = "1.0", features = ["derive"] }
